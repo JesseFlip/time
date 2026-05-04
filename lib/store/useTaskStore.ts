@@ -10,6 +10,8 @@ interface TaskState {
   // Actions
   fetchTasks: (userId: string) => Promise<void>;
   addTask: (task: Omit<LocalTask, 'id' | 'created_at' | 'updated_at' | '_synced' | 'position'>) => Promise<void>;
+  updateTask: (id: string, updates: Partial<LocalTask>) => Promise<void>;
+  deleteTask: (id: string) => Promise<void>;
   sync: () => Promise<void>;
 }
 
@@ -24,8 +26,6 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       // 1. Load from Dexie first (offline-first)
       const localTasks = await db.tasks.where('user_id').equals(userId).toArray();
       set({ tasks: localTasks.sort((a, b) => a.position - b.position) });
-
-      // 2. Background sync (optional, can be called separately)
     } catch (err) {
       set({ error: (err as Error).message });
     } finally {
@@ -39,7 +39,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       id: crypto.randomUUID(),
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
-      position: get().tasks.length, // simple position for now
+      position: get().tasks.length,
       _synced: false,
     };
 
@@ -47,18 +47,57 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     set((state) => ({ tasks: [...state.tasks, newTask] }));
 
     try {
-      // Save to Dexie
       await db.tasks.add(newTask);
-      
-      // Add to outbox
       await db.outbox.add({
         task_id: newTask.id,
         type: 'insert',
         payload: newTask,
         timestamp: new Date().toISOString(),
       });
+      get().sync();
+    } catch (err) {
+      set({ error: (err as Error).message });
+    }
+  },
 
-      // Trigger background sync
+  updateTask: async (id, updates) => {
+    const updatedAt = new Date().toISOString();
+    
+    // Optimistic Update
+    set((state) => ({
+      tasks: state.tasks
+        .map((t) => (t.id === id ? { ...t, ...updates, updated_at: updatedAt } : t))
+        .sort((a, b) => a.position - b.position),
+    }));
+
+    try {
+      await db.tasks.update(id, { ...updates, updated_at: updatedAt, _synced: false });
+      await db.outbox.add({
+        task_id: id,
+        type: 'update',
+        payload: updates,
+        timestamp: updatedAt,
+      });
+      get().sync();
+    } catch (err) {
+      set({ error: (err as Error).message });
+    }
+  },
+
+  deleteTask: async (id) => {
+    // Optimistic Update
+    set((state) => ({
+      tasks: state.tasks.filter((t) => t.id !== id),
+    }));
+
+    try {
+      await db.tasks.delete(id);
+      await db.outbox.add({
+        task_id: id,
+        type: 'delete',
+        payload: {},
+        timestamp: new Date().toISOString(),
+      });
       get().sync();
     } catch (err) {
       set({ error: (err as Error).message });
@@ -77,18 +116,23 @@ export const useTaskStore = create<TaskState>((set, get) => ({
         if (item.type === 'insert') {
           const { error: err } = await supabase.from('tasks').insert([item.payload]);
           error = err;
+        } else if (item.type === 'update') {
+          const { error: err } = await supabase.from('tasks').update(item.payload).eq('id', item.task_id);
+          error = err;
+        } else if (item.type === 'delete') {
+          const { error: err } = await supabase.from('tasks').delete().eq('id', item.task_id);
+          error = err;
         }
-        // Add update/delete logic here later
 
         if (!error) {
-          // Mark as synced in Dexie
-          await db.tasks.update(item.task_id, { _synced: true });
-          // Remove from outbox
+          // If it was a delete, we don't need to update the task record anymore
+          if (item.type !== 'delete') {
+            await db.tasks.update(item.task_id, { _synced: true });
+          }
           await db.outbox.delete(item.id!);
         }
       } catch (err) {
         console.error('Sync failed for item', item.id, err);
-        // Stop processing outbox on error to preserve order
         break;
       }
     }
