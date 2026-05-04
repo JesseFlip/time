@@ -75,7 +75,7 @@ export function QuadrantGrid() {
 
     if (isOverQuadrant) {
       if (activeTask.quadrant !== overId) {
-        updateTask(activeId, { quadrant: overId as any, position: tasks.filter(t => t.quadrant === overId).length });
+        updateTask(activeId, { quadrant: overId as LocalTask['quadrant'], position: tasks.filter(t => t.quadrant === overId).length });
       }
     } else if (overTask) {
       if (activeTask.quadrant !== overTask.quadrant) {

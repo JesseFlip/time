@@ -12,7 +12,7 @@ import { type LocalTask } from '@/lib/db/dexie';
 import { cn } from '@/lib/utils';
 
 interface QuadrantContainerProps {
-  id: string;
+  id: 'do' | 'schedule' | 'delegate' | 'delete';
   label: string;
   description: string;
   color: string;
@@ -49,7 +49,7 @@ export function QuadrantContainer({
           </p>
         </div>
         <AddTaskDialog 
-          defaultQuadrant={id as any} 
+          defaultQuadrant={id} 
           trigger={
             <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-background/50 rounded-full">
               <Plus className="h-4 w-4" />
