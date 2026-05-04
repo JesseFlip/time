@@ -48,6 +48,7 @@ export function TaskCard({ task, isDragging }: TaskCardProps) {
               size="icon"
               className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive hover:bg-destructive/10"
               onClick={handleDelete}
+              aria-label={`Delete task: ${task.title}`}
             >
               <Trash2 className="h-4 w-4" />
             </Button>
