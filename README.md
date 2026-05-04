@@ -20,11 +20,11 @@ The Eisenhower Matrix organizes your tasks into four distinct quadrants to help 
 
 ## ✨ Key Features
 * **Frictionless Capture:** Add tasks quickly with offline-first support.
-* **Drag-and-Drop Interface:** Seamlessly move tasks between quadrants using `dnd-kit`.
+* **Drag-and-Drop Interface:** Seamlessly move tasks between quadrants or reorder within a list using `dnd-kit`.
 * **Reliable Sync:** Real-time synchronization with Supabase and local persistence with Dexie.js.
 * **PWA Ready:** Install it on your mobile device or desktop for an app-like experience via Serwist.
-* **Dark Mode Support:** A sleek, modern aesthetic using Tailwind CSS v4 and shadcn/ui.
-* **WCAG AA Accessible:** Built with accessibility in mind.
+* **Dark Mode Support:** Support for light, dark, and system themes with Tailwind CSS v4 and shadcn/ui.
+* **WCAG AA Accessible:** Built with accessibility in mind, including full keyboard navigation and screen reader support.
 
 ---
 
