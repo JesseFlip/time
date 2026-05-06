@@ -21,9 +21,10 @@ export function Header() {
             target="_blank" 
             rel="noreferrer"
             title="View source on GitHub"
-            className="inline-flex items-center justify-center rounded-full size-9 transition-colors hover:bg-muted text-muted-foreground hover:text-foreground"
+            className="inline-flex items-center justify-center rounded-full px-3 h-9 transition-colors hover:bg-muted text-muted-foreground hover:text-foreground gap-2 text-sm font-medium"
           >
-            <Code className="h-5 w-5" />
+            <Code className="h-4 w-4" />
+            <span className="hidden sm:inline">GitHub</span>
           </a>
         </nav>
       </div>
