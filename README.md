@@ -1,38 +1,79 @@
-# Quadrant
+---
+title: "📐 Quadrant | Eisenhower Matrix PWA"
+---
 
-A cross-device Eisenhower Matrix PWA built for frictionless capture and reliable offline-first sync.
+**Quadrant** is a minimalist, high-performance Progressive Web App (PWA) designed to help you master productivity through the **Eisenhower Matrix** method. It allows you to categorize tasks by urgency and importance, ensuring you focus on what truly matters.
 
-## Live Link
 🚀 **[View Live Site](https://time-pi-self.vercel.app/)**
 
-## Features
-- **Drag & Drop**: Seamlessly move tasks between quadrants or reorder them within a list.
-- **Offline-First**: Powered by Dexie.js for reliable offline use and background sync with Supabase.
-- **Dark Mode**: Support for light, dark, and system themes.
-- **Accessible**: WCAG AA compliant with full keyboard navigation and screen reader support.
+---
 
-## Preview
-![Quadrant Dashboard](./public/screenshots/dashboard.png)
+## 💡 How It Works
+The Eisenhower Matrix organizes your tasks into four distinct quadrants to help you prioritize your workflow:
 
-## Tech Stack
-- **Framework**: Next.js 15 (App Router)
-- **Styling**: Tailwind CSS v4 + shadcn/ui (Base UI)
-- **State Management**: Zustand + TanStack Query v5
-- **Database**: Supabase + Dexie.js
-- **Service Worker**: Serwist
-- **Testing**: Vitest + Playwright
+1.  **Do (Urgent & Important):** Tasks that need immediate attention.
+2.  **Schedule (Important, Not Urgent):** Tasks to be planned for later.
+3.  **Delegate (Urgent, Not Important):** Tasks that can be handed off to others.
+4.  **Delete (Neither):** Tasks that are distractions and should be removed.
 
-## Development
+---
 
-First, install dependencies:
-```bash
-pnpm install
-```
+## ✨ Key Features
+* **Frictionless Capture:** Add tasks quickly with offline-first support.
+* **Drag-and-Drop Interface:** Seamlessly move tasks between quadrants or reorder within a list using `dnd-kit`.
+* **Reliable Sync:** Real-time synchronization with Supabase and local persistence with Dexie.js.
+* **PWA Ready:** Install it on your mobile device or desktop for an app-like experience via Serwist.
+* **Dark Mode Support:** Support for light, dark, and system themes with Tailwind CSS v4 and shadcn/ui.
+* **WCAG AA Accessible:** Built with accessibility in mind, including full keyboard navigation and screen reader support.
 
-Then, run the development server:
-```bash
-pnpm dev
-```
+---
 
-## License
-MIT
+## 🛠️ Tech Stack
+* **Framework:** [Next.js 15](https://nextjs.org/) (App Router) + TypeScript
+* **Styling:** Tailwind CSS v4 + shadcn/ui
+* **State Management:** Zustand + TanStack Query v5
+* **Database:** Supabase (Auth + Postgres) + Dexie.js (IndexedDB cache)
+* **Service Worker:** Serwist
+* **Testing:** Vitest + Playwright
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+* Node.js (Latest LTS recommended)
+* pnpm
+
+### Installation
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/JesseFlip/time.git
+   ```
+2. **Navigate to the directory:**
+   ```bash
+   cd time
+   ```
+3. **Install dependencies:**
+   ```bash
+   pnpm install
+   ```
+4. **Run the development server:**
+   ```bash
+   pnpm dev
+   ```
+5. **Open the app:** Navigate to `http://localhost:3000` in your browser.
+
+---
+
+## 📸 Preview
+![Quadrant Dashboard](/public/screenshots/dashboard.png)
+
+---
+
+## 📄 License
+This project is licensed under the MIT License.
+
+---
+
+**Built with ❤️ for productivity seekers.**
+
