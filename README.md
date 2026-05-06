@@ -1,6 +1,6 @@
 ---
-
-# 📐 Quadrant | Eisenhower Matrix PWA
+title: "📐 Quadrant | Eisenhower Matrix PWA"
+---
 
 **Quadrant** is a minimalist, high-performance Progressive Web App (PWA) designed to help you master productivity through the **Eisenhower Matrix** method. It allows you to categorize tasks by urgency and importance, ensuring you focus on what truly matters.
 
