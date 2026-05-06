@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Code } from 'lucide-react';
+import { Code, MessageSquare } from 'lucide-react';
 import { AddTaskDialog } from './AddTaskDialog';
 import { HelpDialog } from './HelpDialog';
 import { ModeToggle } from '@/components/mode-toggle';
@@ -25,6 +25,16 @@ export function Header() {
           >
             <Code className="h-4 w-4" />
             <span className="hidden sm:inline">GitHub</span>
+          </a>
+          <a 
+            href="https://github.com/JesseFlip/time/issues" 
+            target="_blank" 
+            rel="noreferrer"
+            title="Suggest feedback or report issues"
+            className="inline-flex items-center justify-center rounded-full px-3 h-9 transition-colors hover:bg-muted text-muted-foreground hover:text-foreground gap-2 text-sm font-medium"
+          >
+            <MessageSquare className="h-4 w-4" />
+            <span className="hidden sm:inline">Feedback</span>
           </a>
         </nav>
       </div>
