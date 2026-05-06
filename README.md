@@ -4,7 +4,7 @@ title: "📐 Quadrant | Eisenhower Matrix PWA"
 
 **Quadrant** is a minimalist, high-performance Progressive Web App (PWA) designed to help you master productivity through the **Eisenhower Matrix** method. It allows you to categorize tasks by urgency and importance, ensuring you focus on what truly matters.
 
-🚀 **[View Live Site](https://time-pi-self.vercel.app/)**
+🚀 **<a href="https://time-pi-self.vercel.app/" target="_blank" rel="noopener noreferrer">View Live Site</a>**
 
 ---
 
@@ -29,7 +29,7 @@ The Eisenhower Matrix organizes your tasks into four distinct quadrants to help 
 ---
 
 ## 🛠️ Tech Stack
-* **Framework:** [Next.js 15](https://nextjs.org/) (App Router) + TypeScript
+* **Framework:** <a href="https://nextjs.org/" target="_blank" rel="noopener noreferrer">Next.js 15</a> (App Router) + TypeScript
 * **Styling:** Tailwind CSS v4 + shadcn/ui
 * **State Management:** Zustand + TanStack Query v5
 * **Database:** Supabase (Auth + Postgres) + Dexie.js (IndexedDB cache)
@@ -66,7 +66,8 @@ The Eisenhower Matrix organizes your tasks into four distinct quadrants to help 
 ---
 
 ## 📸 Preview
-![Quadrant Dashboard](/public/screenshots/dashboard.png)
+![Quadrant Dashboard](/public/screenshots/quadrant_snippet.png)
+![Dashboard Overview](/public/screenshots/dashboard.png)
 
 ---
 
