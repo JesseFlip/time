@@ -1,5 +1,3 @@
-Based on the [Quadrant PWA](https://time-pi-self.vercel.app/) you're working on, here is a polished, professional **README.md** tailored to your project. 
-
 ---
 
 # 📐 Quadrant | Eisenhower Matrix PWA
