@@ -17,7 +17,7 @@ export function CoachPanel({ isOpen, onClose }: CoachPanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
