@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/client';
 
 interface TaskState {
   tasks: LocalTask[];
+  filteredTasks: LocalTask[] | null;
   isLoading: boolean;
   error: string | null;
   
@@ -13,12 +14,16 @@ interface TaskState {
   updateTask: (id: string, updates: Partial<LocalTask>) => Promise<void>;
   deleteTask: (id: string) => Promise<void>;
   sync: () => Promise<void>;
+  setFilteredTasks: (tasks: LocalTask[] | null) => void;
 }
 
 export const useTaskStore = create<TaskState>((set, get) => ({
   tasks: [],
+  filteredTasks: null,
   isLoading: false,
   error: null,
+
+  setFilteredTasks: (tasks) => set({ filteredTasks: tasks }),
 
   fetchTasks: async (userId) => {
     set({ isLoading: true });

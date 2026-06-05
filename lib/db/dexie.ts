@@ -17,6 +17,7 @@ export interface LocalTask {
   deleted_at?: string;
   /** local-only flag to track sync status */
   _synced?: boolean;
+  modes: string[];
 }
 
 export interface OutboxItem {
@@ -36,6 +37,14 @@ export class QuadrantDatabase extends Dexie {
     this.version(1).stores({
       tasks: 'id, user_id, quadrant, status, updated_at',
       outbox: '++id, task_id, timestamp'
+    });
+    this.version(2).stores({
+      tasks: 'id, user_id, quadrant, status, updated_at, *modes',
+      outbox: '++id, task_id, timestamp'
+    }).upgrade(tx => {
+      return tx.table('tasks').toCollection().modify(task => {
+        if (!task.modes) task.modes = [];
+      });
     });
   }
 }

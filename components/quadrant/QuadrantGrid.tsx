@@ -19,12 +19,13 @@ import { useTaskStore } from '@/lib/store/useTaskStore';
 import { TaskCard } from './TaskCard';
 import { QuadrantContainer } from './QuadrantContainer';
 import { type LocalTask } from '@/lib/db/dexie';
+import { useFocusModes } from '@/hooks/useFocusModes';
 
 const QUADRANTS = [
   { id: 'do', label: 'Do', description: 'Urgent & Important', color: 'border-red-500/20 bg-red-500/5' },
   { id: 'schedule', label: 'Schedule', description: 'Important, Not Urgent', color: 'border-blue-500/20 bg-blue-500/5' },
   { id: 'delegate', label: 'Delegate', description: 'Urgent, Not Important', color: 'border-orange-500/20 bg-orange-500/5' },
-  { id: 'delete', label: 'Delete', description: 'Neither', color: 'border-gray-500/20 bg-gray-500/5' },
+  { id: 'delete', label: 'Eliminate', description: 'Neither', color: 'border-gray-500/20 bg-gray-500/5' },
 ] as const;
 
 /**
@@ -33,6 +34,7 @@ const QUADRANTS = [
  */
 export function QuadrantGrid() {
   const { tasks, fetchTasks, isLoading, updateTask } = useTaskStore();
+  const { activeModes } = useFocusModes();
   const [activeTask, setActiveTask] = useState<LocalTask | null>(null);
 
   useEffect(() => {
@@ -117,18 +119,25 @@ export function QuadrantGrid() {
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-[calc(100vh-10rem)]">
-        {QUADRANTS.map((q) => (
-          <QuadrantContainer
-            key={q.id}
-            id={q.id}
-            label={q.label}
-            description={q.description}
-            color={q.color}
-            tasks={tasks.filter((t) => t.quadrant === q.id).sort((a, b) => a.position - b.position)}
-            isLoading={isLoading}
-          />
-        ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-auto min-h-[calc(100vh-10rem)] md:h-[calc(100vh-10rem)]">
+        {QUADRANTS.map((q) => {
+          const quadrantTasks = tasks.filter((t) => t.quadrant === q.id).sort((a, b) => a.position - b.position);
+          const visibleTasks = activeModes.length > 0 
+            ? quadrantTasks.filter(t => !t.modes || t.modes.length === 0 || t.modes.some(m => activeModes.includes(m)))
+            : quadrantTasks;
+            
+          return (
+            <QuadrantContainer
+              key={q.id}
+              id={q.id}
+              label={q.label}
+              description={q.description}
+              color={q.color}
+              tasks={visibleTasks}
+              isLoading={isLoading}
+            />
+          );
+        })}
       </div>
       
       <DragOverlay dropAnimation={{

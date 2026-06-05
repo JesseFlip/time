@@ -3,7 +3,7 @@
 import React from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { AddTaskDialog } from './AddTaskDialog';
@@ -41,9 +41,9 @@ export function QuadrantContainer({
     >
       <CardHeader className="pb-3 space-y-1 flex flex-row items-center justify-between">
         <div className="space-y-0.5">
-          <CardTitle className="text-xs font-bold tracking-widest uppercase opacity-80">
+          <h2 className="font-heading text-base leading-snug group-data-[size=sm]/card:text-sm text-xs font-bold tracking-widest uppercase opacity-80">
             {label}
-          </CardTitle>
+          </h2>
           <p className="text-[10px] font-medium opacity-60 uppercase tracking-tighter">
             {description}
           </p>
@@ -51,7 +51,7 @@ export function QuadrantContainer({
         <AddTaskDialog 
           defaultQuadrant={id} 
           trigger={
-            <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-background/50 rounded-full">
+            <Button size="icon" variant="ghost" aria-label={`Add task to ${label}`} className="h-8 w-8 hover:bg-background/50 rounded-full">
               <Plus className="h-4 w-4" />
             </Button>
           }

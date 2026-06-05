@@ -33,11 +33,14 @@ export function SortableTask({ task }: SortableTaskProps) {
     <div
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
       className="touch-none"
     >
-      <TaskCard task={task} isDragging={isDragging} />
+      <TaskCard 
+        task={task} 
+        isDragging={isDragging} 
+        dragAttributes={attributes}
+        dragListeners={listeners}
+      />
     </div>
   );
 }
