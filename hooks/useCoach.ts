@@ -74,6 +74,23 @@ export function useCoach() {
     setMessages(updatedMessages);
     setIsLoading(true);
 
+    const provider = localStorage.getItem('coach_ai_provider') || 'anthropic';
+    const apiKey = localStorage.getItem('coach_ai_api_key');
+
+    if (!apiKey) {
+      setTimeout(() => {
+        setMessages(prev => prev.map(m => 
+          m.id === asstMsgId ? { 
+            ...m, 
+            content: "Please click the settings icon above to configure your AI provider and API key before we begin!", 
+            isStreaming: false 
+          } : m
+        ));
+        setIsLoading(false);
+      }, 500);
+      return;
+    }
+
     try {
       const apiMessages = [...messages, userMsg].map(m => ({
         role: m.role,
@@ -82,7 +99,11 @@ export function useCoach() {
 
       const res = await fetch('/api/coach', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-ai-provider': provider,
+          'x-ai-api-key': apiKey
+        },
         body: JSON.stringify({
           messages: apiMessages,
           boardContext: getBoardContext()

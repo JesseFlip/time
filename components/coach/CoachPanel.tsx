@@ -5,6 +5,8 @@ import { useCoach } from '@/hooks/useCoach';
 import { CoachMessageThread } from './CoachMessageThread';
 import { CoachInputBar } from './CoachInputBar';
 import { CoachAvatar } from './CoachAvatar';
+import { CoachSettingsDialog } from './CoachSettingsDialog';
+import { Settings } from 'lucide-react';
 
 interface CoachPanelProps {
   isOpen: boolean;
@@ -14,6 +16,7 @@ interface CoachPanelProps {
 export function CoachPanel({ isOpen, onClose }: CoachPanelProps) {
   const { messages, isLoading, sendMessage } = useCoach();
   const [mounted, setMounted] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -45,14 +48,16 @@ export function CoachPanel({ isOpen, onClose }: CoachPanelProps) {
         />
       )}
 
+      <CoachSettingsDialog open={settingsOpen} onOpenChange={setSettingsOpen} />
+
       {/* Drawer Panel */}
       <div 
         ref={panelRef}
         role="complementary"
         aria-label="Aria accountability coach"
-        className={`fixed z-50 bg-card border-l border-border shadow-xl transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]
+        className={`fixed z-50 bg-card border-l border-border shadow-xl transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]
           bottom-0 right-0 left-0 h-[60vh] rounded-t-xl md:rounded-none md:h-screen md:w-[360px] md:top-0 md:left-auto
-          ${isOpen ? 'translate-y-0 md:translate-x-0' : 'translate-y-full md:translate-x-full md:translate-y-0'}`}
+          ${isOpen ? 'translate-y-0 md:translate-x-0 opacity-100' : 'translate-y-full md:translate-x-full md:translate-y-0 opacity-0 pointer-events-none'}`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
@@ -62,15 +67,25 @@ export function CoachPanel({ isOpen, onClose }: CoachPanelProps) {
               <h2 className="text-sm font-semibold">Aria · Accountability Coach</h2>
               <div className="w-2 h-2 rounded-full bg-green-500 ml-1" title="Connected" />
             </div>
-            <button 
-              onClick={onClose}
-              className="p-2 hover:bg-muted rounded-full transition-colors md:hidden"
-              aria-label="Close panel"
-            >
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M11 4L4 11M4 4L11 11" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
+            <div className="flex items-center gap-1">
+              <button 
+                onClick={() => setSettingsOpen(true)}
+                className="p-2 hover:bg-muted rounded-full transition-colors"
+                aria-label="Settings"
+                title="Settings"
+              >
+                <Settings className="w-4 h-4 text-muted-foreground" />
+              </button>
+              <button 
+                onClick={onClose}
+                className="p-2 hover:bg-muted rounded-full transition-colors md:hidden"
+                aria-label="Close panel"
+              >
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M11 4L4 11M4 4L11 11" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
           </div>
 
           {/* Messages */}
