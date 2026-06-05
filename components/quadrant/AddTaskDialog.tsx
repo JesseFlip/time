@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Plus } from 'lucide-react';
@@ -54,7 +54,7 @@ export function AddTaskDialog({ defaultQuadrant = 'do', trigger }: AddTaskDialog
     },
   });
 
-  const watchedModes = form.watch('modes');
+  const watchedModes = useWatch({ control: form.control, name: 'modes', defaultValue: [] });
 
   const onSubmit = async (values: TaskFormValues) => {
     // In a real app, we'd get the user_id from auth

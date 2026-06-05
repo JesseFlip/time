@@ -20,7 +20,7 @@ export function Header() {
     // Initialize state properly without calling setIsCoachOpen if possible, or ignore warning.
     // We can't use useState(saved === 'true') because it causes hydration mismatch.
     // Just ignore the lint rule
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (saved === 'true') setIsCoachOpen(true);
 
     const handleOpen = () => setIsCoachOpen(true);
