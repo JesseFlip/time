@@ -24,11 +24,13 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useTaskStore } from '@/lib/store/useTaskStore';
+import { BUILT_IN_MODES } from '@/types/modes';
 
 const taskSchema = z.object({
   title: z.string().min(1, 'Title is required').max(280),
   quadrant: z.enum(['do', 'schedule', 'delegate', 'delete']),
   notes: z.string().optional(),
+  modes: z.array(z.string()),
 });
 
 type TaskFormValues = z.infer<typeof taskSchema>;
@@ -48,8 +50,11 @@ export function AddTaskDialog({ defaultQuadrant = 'do', trigger }: AddTaskDialog
       title: '',
       quadrant: defaultQuadrant,
       notes: '',
+      modes: [],
     },
   });
+
+  const watchedModes = form.watch('modes');
 
   const onSubmit = async (values: TaskFormValues) => {
     // In a real app, we'd get the user_id from auth
@@ -109,6 +114,35 @@ export function AddTaskDialog({ defaultQuadrant = 'do', trigger }: AddTaskDialog
                 <SelectItem value="delete">DELETE (Neither)</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Focus Modes</Label>
+            <div className="flex flex-wrap gap-2">
+              {BUILT_IN_MODES.map(mode => {
+                const isSelected = watchedModes.includes(mode.id);
+                return (
+                  <button
+                    key={mode.id}
+                    type="button"
+                    onClick={() => {
+                      const current = form.getValues('modes');
+                      if (isSelected) {
+                        form.setValue('modes', current.filter(m => m !== mode.id));
+                      } else {
+                        form.setValue('modes', [...current, mode.id]);
+                      }
+                    }}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all
+                      ${isSelected 
+                        ? 'bg-primary text-primary-foreground shadow-sm' 
+                        : 'bg-secondary/50 text-secondary-foreground hover:bg-secondary'}`}
+                  >
+                    {mode.emoji} {mode.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           <div className="space-y-2">

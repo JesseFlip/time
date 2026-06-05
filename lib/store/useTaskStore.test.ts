@@ -43,6 +43,7 @@ describe('useTaskStore', () => {
       status: 'open' as const,
       user_id: 'user-123',
       tags: [],
+      modes: [],
     };
 
     await useTaskStore.getState().addTask(taskData);
