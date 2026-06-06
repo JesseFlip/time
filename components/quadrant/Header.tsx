@@ -10,8 +10,14 @@ import { CoachStatusDot } from './../coach/CoachStatusDot';
 import { CoachPanel } from './../coach/CoachPanel';
 import { useCoach } from '@/hooks/useCoach';
 
+import { AuthDialog } from './../auth/AuthDialog';
+import { createClient } from '@/lib/supabase/client';
+import { User } from '@supabase/supabase-js';
+
 export function Header() {
   const [isCoachOpen, setIsCoachOpen] = React.useState(false);
+  const [isAuthOpen, setIsAuthOpen] = React.useState(false);
+  const [user, setUser] = React.useState<User | null>(null);
   const { messages } = useCoach();
   const unreadCount = isCoachOpen ? 0 : messages.filter(m => m.role === 'assistant').length; // Simple proxy for unread
 
@@ -25,8 +31,26 @@ export function Header() {
 
     const handleOpen = () => setIsCoachOpen(true);
     window.addEventListener('coach-open-panel', handleOpen);
-    return () => window.removeEventListener('coach-open-panel', handleOpen);
+
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => {
+      window.removeEventListener('coach-open-panel', handleOpen);
+      subscription.unsubscribe();
+    };
   }, []);
+
+  const handleSignOut = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+  };
 
   const toggleCoach = () => {
     setIsCoachOpen(prev => {
@@ -69,13 +93,20 @@ export function Header() {
             <span className="hidden sm:inline">Feedback</span>
           </a>
           <div className="ml-2 pl-2 border-l border-border/40">
-            <Button variant="default" size="sm" className="rounded-full px-4 h-8 text-xs font-semibold shadow-sm">
-              Sign in to sync
-            </Button>
+            {user ? (
+              <Button variant="ghost" size="sm" className="rounded-full px-4 h-8 text-xs font-semibold" onClick={handleSignOut}>
+                Sign Out ({user.email})
+              </Button>
+            ) : (
+              <Button variant="default" size="sm" className="rounded-full px-4 h-8 text-xs font-semibold shadow-sm" onClick={() => setIsAuthOpen(true)}>
+                Sign in to sync
+              </Button>
+            )}
           </div>
         </nav>
       </div>
       <AddTaskDialog />
+      <AuthDialog open={isAuthOpen} onOpenChange={setIsAuthOpen} />
       <CoachPanel isOpen={isCoachOpen} onClose={() => setIsCoachOpen(false)} />
     </header>
   );

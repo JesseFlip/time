@@ -135,11 +135,15 @@ export async function POST(req: NextRequest) {
       },
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Coach API Error:', error);
-    return new Response(
-      "Something went wrong on my end. Try again in a moment.", 
-      { status: 500 }
-    );
+    let errorMessage = "Something went wrong on my end. Try again in a moment.";
+    
+    // Attempt to extract useful error details
+    if (error?.message) {
+      errorMessage = error.message;
+    }
+    
+    return new Response(errorMessage, { status: 500 });
   }
 }

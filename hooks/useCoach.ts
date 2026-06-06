@@ -152,13 +152,19 @@ export function useCoach() {
       setMessages(finalMessages);
       saveSession(finalMessages);
 
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+      
+      let errorMsg = "I'm having trouble connecting right now. Check back in a moment.";
+      if (err?.message) {
+        errorMsg = `API Error: ${err.message}`;
+      }
+      
       // Replace placeholder with error
       setMessages(prev => prev.map(m => 
         m.id === asstMsgId ? { 
           ...m, 
-          content: "I'm having trouble connecting right now. Check back in a moment.", 
+          content: errorMsg, 
           isStreaming: false 
         } : m
       ));
