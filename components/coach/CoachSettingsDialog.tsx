@@ -82,7 +82,7 @@ export function CoachSettingsDialog({ open, onOpenChange }: CoachSettingsDialogP
               <SelectContent>
                 <SelectItem value="anthropic">Anthropic (Claude 3.5 Sonnet)</SelectItem>
                 <SelectItem value="openai">OpenAI (GPT-4o)</SelectItem>
-                <SelectItem value="google">Google (Gemini 1.5 Pro)</SelectItem>
+                <SelectItem value="google">Google (Gemini 2.5 Pro)</SelectItem>
               </SelectContent>
             </Select>
           </div>

@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
             }));
 
             const responseStream = await ai.models.generateContentStream({
-              model: 'gemini-1.5-pro',
+              model: 'gemini-2.5-pro',
               contents,
               config: {
                 systemInstruction: systemPrompt,
